@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Chat-App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans - serif;
+            border: 1px solid #000;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            flex-direction: row;
+        }
+
+        .left-section {
+            display: flex;
+            flex: 4;
+            flex-direction: column;
+            border: 1px solid #000;
+        }
+
+        .right-section {
+            /* display: flex; */
+            flex: 1;
+            border: 1px solid #000;
+        }
+
+        .user-section {
+            flex: 1;
+            border: 1px solid #000;
+        }
+
+        .chat-section {
+            flex: 3;
+            border: 1px solid #000;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client-socket-handling.js">
+        console.log('Entering script');
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-section">
+            <div class="user-section">
+                <h1 class="user-name"></h1>
+            </div>
+            <div class="chat-section">chat-section</div>
+        </div>
+        <div class="right-section">
+            <h1>Users in the network</h1>
+            <ul id="users-list">
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
