@@ -1,64 +1,181 @@
 <!DOCTYPE html>
 
-<head>
-    <title>Chat-App</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans - serif;
-            border: 1px solid #000;
-        }
+<html lang="en">
+    <head>
+        <title>Chat-App</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans - serif;
+            }
 
-        .container {
-            display: flex;
-            height: 100vh;
-            flex-direction: row;
-        }
+            .container {
+                display: flex;
+                height: 100vh;
+                flex-direction: row;
+            }
 
-        .left-section {
-            display: flex;
-            flex: 4;
-            flex-direction: column;
-            border: 1px solid #000;
-        }
+            .left-section {
+                display: flex;
+                flex: 4;
+                flex-direction: column;
+            }
 
-        .right-section {
-            /* display: flex; */
-            flex: 1;
-            border: 1px solid #000;
-        }
+            .right-section {
+                /* display: flex; */
+                flex: 1;
+                border: 1px solid #000;
+            }
 
-        .user-section {
-            flex: 1;
-            border: 1px solid #000;
-        }
+            .current-user-section {
+                flex: 1;
+            }
 
-        .chat-section {
-            flex: 3;
-            border: 1px solid #000;
-        }
-    </style>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/client-socket-handling.js">
-        console.log('Entering script');
-    </script>
-</head>
+            .chat-section {
+                flex: 3;
+            }
 
-<body>
-    <div class="container">
-        <div class="left-section">
-            <div class="user-section">
-                <h1 class="user-name"></h1>
+            .innerSection {
+                border-top: 1px solid #000;
+                justify-content: space-between;
+            }
+
+            .message-section {
+                width: 100%; /* Ensure the message section takes the full width of its parent */
+            }
+
+            #form {
+                background: rgba(0, 0, 0, 0.15);
+                padding: 0.25rem;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                height: 3rem;
+                width: 80%; /* Inherit the width from the parent .message-section */
+                box-sizing: border-box;
+                backdrop-filter: blur(10px);
+            }
+
+            #input {
+                border: none;
+                padding: 0 1rem;
+                flex-grow: 1;
+                border-radius: 2rem;
+                margin: 0.25rem;
+            }
+
+            #input:focus {
+                outline: none;
+            }
+
+            #form > button {
+                background: #333;
+                border: none;
+                padding: 0 1rem;
+                margin: 0.25rem;
+                border-radius: 3px;
+                outline: none;
+                color: #fff;
+            }
+
+            #messages {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            #messages > li {
+                padding: 0.5rem 1rem;
+            }
+
+            #messages > li:nth-child(odd) {
+                background: #efefef;
+            }
+        </style>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/client-socket-handling.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="left-section">
+                <div
+                    class="current-user-section"
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        padding: 10px;
+                    "
+                >
+                    <h1 class="user-name"></h1>
+                    <div class="graph">
+                        <h2 id="interactedUsers">interactedUsers = 0</h2>
+                        <h2 id="totalUsers">totalUsers = 0</h2>
+                    </div>
+                </div>
+
+                <div class="chat-section" style="width: 100%">
+                    <div
+                        class="innerSection"
+                        style="display: none; flex-direction: column"
+                    >
+                        <div
+                            id="status-bar"
+                            style="
+                                width: 100h;
+                                height: fit-content;
+                                display: flex;
+                                justify-content: space-between;
+                                padding: 10px;
+                            "
+                        >
+                            <div>
+                                <h2
+                                    class="otherUserName"
+                                    style="
+                                        margin-left: 10px;
+                                        font-style: italic;
+                                    "
+                                >
+                                    other user-name
+                                </h2>
+                            </div>
+                            <div
+                                class="closeButton"
+                                style="margin: 10px 10px; cursor: pointer"
+                            >
+                                <!-- Replace the text with your close icon or symbol -->
+                                &#x2718;
+                                <!-- Unicode character for a close symbol (X) -->
+                            </div>
+                        </div>
+
+                        <div
+                            class="message-section"
+                            style="flex-grow: 1; overflow-y: auto"
+                        >
+                            <ul id="messages"></ul>
+                            <form id="form" action="">
+                                <input id="input" autocomplete="off" />
+                                <button id="sendButton" type="button">
+                                    Send
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="chat-section">chat-section</div>
-        </div>
-        <div class="right-section">
-            <h1>Users in the network</h1>
-            <ul id="users-list">
-            </ul>
-        </div>
-    </div>
-</body>
 
+            <div class="right-section">
+                <h1 style="border-bottom: 1px solid #000">
+                    Users in the network
+                </h1>
+                <ul id="users-list"></ul>
+            </div>
+        </div>
+    </body>
 </html>
