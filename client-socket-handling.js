@@ -170,6 +170,8 @@ function openChatWindow(socketID) {
 	const sendButton = document.getElementById("sendButton");
 	sendButton.disabled = false;
 
+	sendButton.classList.remove("non-clickable");
+
 	// Empty the content of the ul
 	messagesElement.innerHTML = "";
 
@@ -182,6 +184,10 @@ function openChatWindow(socketID) {
 		let isIncoming = userMessages[i].in;
 		let message = userMessages[i].message;
 		addMsgToChatWindow(message, isIncoming);
+	}
+	const inputElement = document.getElementById("input");
+	if (inputElement) {
+		inputElement.focus();
 	}
 }
 
@@ -239,7 +245,7 @@ function addUsersToNetwork(socketID, userName) {
 socket.on("newUserAdded", (socketID, userName) => {
 	addUsersToNetwork(socketID, userName);
 	updateULlist();
-	alert(`** ${userName} ** entered the network`);
+
 	totalUsers++;
 	editGraph();
 });
@@ -254,7 +260,6 @@ socket.on("existingUsers", (existingUsers) => {
 });
 
 socket.on("userDisconnected", (socketID) => {
-	alert("User disconnected : " + networkUsers[socketID]?.userName);
 	networkUsers[socketID].userLeft = true;
 
 	if (networkUsers[socketID].interaction == true) {
@@ -266,10 +271,12 @@ socket.on("userDisconnected", (socketID) => {
 
 	if (chatUserID == socketID) {
 		addMsgToChatWindow("** USER LEFT THE CHAT **", 1, 1);
-	}
 
-	const sendButton = document.getElementById("sendButton");
-	sendButton.disabled = true;
+		const sendButton = document.getElementById("sendButton");
+		sendButton.disabled = true;
+
+		sendButton.classList.add("non-clickable");
+	}
 
 	updateULlist();
 	totalUsers--;
@@ -280,9 +287,6 @@ socket.on("chat message", (socketID, message) => {
 	if (chatUserID == socketID) {
 		addMsgToChatWindow(message, 1);
 	} else {
-		alert(
-			"** " + networkUsers[socketID].userName + " ** sent you a message"
-		);
 		networkUsers[socketID].newMessage = true;
 		updateULlist();
 	}

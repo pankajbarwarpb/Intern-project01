@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-    console.log("\nUser connected at socket ID: " + socket.id);
 
     socket.on("createNewUser", (userName) => {
         // Send existing users to the new user
@@ -26,7 +25,7 @@ io.on("connection", (socket) => {
         // Add the new user to the existingUsers object
         existingUsers[socket.id] = userName;
         console.log(
-            'New user "' +
+            '\nNew user "' +
                 userName +
                 '" got connected with socket ID: ' +
                 socket.id
